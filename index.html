@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trisha Hindi Classes — Learn Hindi with Confidence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    .devanagari, h1 span[lang="hi"], #vowels-grid .devanagari, #consonants-grid .devanagari {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --saffron: #FF9933;
+      --green: #138808;
+      --navy: #1a1a3e;
+      --cream: #FFF8F0;
+      --text: #2d2d2d;
+    }
+
+    body { font-family: 'Segoe UI', sans-serif; color: var(--text); background: #fff; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; background: var(--navy);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .logo { color: var(--saffron); font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; }
+    .logo span { color: #fff; }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav a { color: #ccc; text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
+    nav a:hover { color: var(--saffron); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--navy) 0%, #2d1b69 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: 'हिंदी';
+      position: absolute; font-size: 20rem; font-weight: 900;
+      color: rgba(255,255,255,0.03); top: 50%; left: 50%;
+      transform: translate(-50%, -50%); pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 700px; }
+    .hero-badge {
+      display: inline-block; background: var(--saffron); color: white;
+      padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.85rem;
+      font-weight: 600; margin-bottom: 1.5rem; letter-spacing: 1px;
+    }
+    .hero h1 { font-size: 3.5rem; color: #fff; line-height: 1.15; margin-bottom: 1rem; }
+    .hero h1 span { color: var(--saffron); }
+    .hero p { font-size: 1.2rem; color: #bbb; margin-bottom: 2.5rem; line-height: 1.7; }
+    .btn {
+      display: inline-block; padding: 0.9rem 2.2rem; border-radius: 8px;
+      font-size: 1rem; font-weight: 600; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
+    }
+    .btn-primary { background: var(--saffron); color: white; margin-right: 1rem; }
+    .btn-primary:hover { background: #e8871e; transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); }
+    .btn-outline:hover { border-color: var(--saffron); color: var(--saffron); }
+
+    .stats {
+      display: flex; gap: 3rem; justify-content: center; margin-top: 4rem;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat strong { display: block; font-size: 2rem; color: var(--saffron); font-weight: 700; }
+    .stat span { color: #999; font-size: 0.9rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .section-title {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-title h2 { font-size: 2.2rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .section-title p { color: #777; font-size: 1rem; }
+    .section-title .line {
+      width: 60px; height: 4px; background: var(--saffron);
+      margin: 0.8rem auto 0; border-radius: 2px;
+    }
+
+    /* ABOUT */
+    .about { background: var(--cream); }
+    .about-inner { display: flex; gap: 4rem; align-items: center; flex-wrap: wrap; }
+    .about-avatar {
+      width: 200px; height: 200px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--saffron), #e8871e);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; flex-shrink: 0; box-shadow: 0 8px 30px rgba(255,153,51,0.3);
+    }
+    .about-text h3 { font-size: 1.8rem; color: var(--navy); margin-bottom: 1rem; }
+    .about-text p { color: #555; line-height: 1.8; margin-bottom: 1rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .tag {
+      background: white; border: 1px solid #ddd; border-radius: 20px;
+      padding: 0.3rem 0.9rem; font-size: 0.85rem; color: var(--navy);
+    }
+
+    /* COURSES */
+    .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .course-card {
+      border: 1px solid #eee; border-radius: 16px; padding: 2rem;
+      transition: box-shadow 0.2s, transform 0.2s; background: #fff;
+    }
+    .course-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.1); transform: translateY(-4px); }
+    .course-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .course-card h3 { font-size: 1.2rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .course-card p { color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
+    .course-level {
+      display: inline-block; padding: 0.2rem 0.8rem; border-radius: 12px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .beginner { background: #e8f5e9; color: var(--green); }
+    .intermediate { background: #fff3e0; color: #e65100; }
+    .advanced { background: #fce4ec; color: #c62828; }
+
+    /* WHY */
+    .why { background: var(--cream); }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+    .why-card { text-align: center; padding: 1.5rem; }
+    .why-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .why-card h4 { color: var(--navy); margin-bottom: 0.5rem; font-size: 1.05rem; }
+    .why-card p { color: #666; font-size: 0.9rem; line-height: 1.6; }
+
+    /* TESTIMONIALS */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .testimonial {
+      background: var(--cream); border-radius: 16px; padding: 1.8rem;
+      border-left: 4px solid var(--saffron);
+    }
+    .testimonial p { color: #555; font-style: italic; line-height: 1.7; margin-bottom: 1rem; }
+    .testimonial-author { font-weight: 600; color: var(--navy); font-size: 0.9rem; }
+    .stars { color: var(--saffron); margin-bottom: 0.8rem; }
+
+    /* CONTACT */
+    .contact { background: var(--navy); color: white; text-align: center; }
+    .contact .section-title h2 { color: white; }
+    .contact .section-title p { color: #aaa; }
+    .contact-form {
+      max-width: 500px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .contact-form input, .contact-form select, .contact-form textarea {
+      padding: 0.9rem 1.2rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08); color: white; font-size: 1rem;
+      outline: none; transition: border 0.2s;
+    }
+    .contact-form input::placeholder, .contact-form textarea::placeholder { color: #aaa; }
+    .contact-form input:focus, .contact-form textarea:focus { border-color: var(--saffron); }
+    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .contact-form .btn-primary { width: 100%; font-size: 1rem; padding: 1rem; }
+
+    /* FOOTER */
+    footer {
+      background: #0f0f22; color: #666; text-align: center;
+      padding: 1.5rem; font-size: 0.9rem;
+    }
+    footer span { color: var(--saffron); }
+
+    /* ALPHABET */
+    #alphabet { background: var(--cream); }
+    .alphabet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .letter-card {
+      background: white; border-radius: 12px; padding: 0.8rem 0.4rem;
+      text-align: center; cursor: pointer; border: 2px solid transparent;
+      transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .letter-card:hover { border-color: var(--saffron); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(255,153,51,0.2); }
+    .letter-card .devanagari { font-size: 2rem; display: block; line-height: 1.2; color: var(--navy); font-family: 'Noto Sans Devanagari', sans-serif; }
+    .letter-card .roman { font-size: 0.75rem; color: #888; margin-top: 0.3rem; }
+    .letter-card .sound { font-size: 0.7rem; color: var(--saffron); font-weight: 600; }
+
+    /* MATRA TABS */
+    .matra-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .matra-tab {
+      padding: 0.4rem 1rem; border-radius: 20px; border: 2px solid var(--saffron);
+      background: transparent; color: var(--navy); cursor: pointer; font-size: 1rem;
+      font-family: 'Noto Sans Devanagari', sans-serif; transition: all 0.2s;
+    }
+    .matra-tab.active, .matra-tab:hover { background: var(--saffron); color: white; }
+
+    /* BARAKHADI TABLE */
+    #barakhadi-table th {
+      background: var(--navy); color: var(--saffron);
+      padding: 0.5rem 0.6rem; font-size: 0.85rem; text-align: center;
+      position: sticky; top: 0; white-space: nowrap;
+    }
+    #barakhadi-table td {
+      padding: 0.4rem 0.5rem; text-align: center; border: 1px solid #e0e0e0;
+      font-size: 1rem; background: white; min-width: 60px;
+    }
+    #barakhadi-table tr:nth-child(even) td { background: #fafafa; }
+    #barakhadi-table td:first-child {
+      background: var(--navy); color: var(--saffron);
+      font-weight: bold; font-size: 1.1rem; position: sticky; left: 0;
+    }
+    #barakhadi-table td .bara-hi { display: block; font-size: 1.1rem; color: var(--navy); }
+    #barakhadi-table td:first-child .bara-hi { color: var(--saffron); }
+    #barakhadi-table td .bara-en { display: block; font-size: 0.65rem; color: #999; }
+    #barakhadi-table td:first-child .bara-en { color: #aaa; }
+    #barakhadi-table td:hover { background: #fff3e0 !important; cursor: pointer; }
+
+    /* WORDS */
+    #words { background: white; }
+    .words-filter { display: flex; gap: 0.8rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 0.4rem 1.2rem; border-radius: 20px; border: 2px solid var(--saffron);
+      background: transparent; color: var(--saffron); cursor: pointer; font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--saffron); color: white; }
+    .words-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+    .word-card {
+      background: var(--cream); border-radius: 12px; padding: 1rem;
+      text-align: center; cursor: pointer; transition: all 0.2s;
+      border: 2px solid transparent;
+    }
+    .word-card:hover { border-color: var(--saffron); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(255,153,51,0.15); }
+    .word-card .w-hindi { font-size: 1.8rem; font-family: 'Noto Sans Devanagari', sans-serif; color: var(--navy); display: block; }
+    .word-card .w-roman { font-size: 0.8rem; color: var(--saffron); font-weight: 600; margin: 0.2rem 0; }
+    .word-card .w-meaning { font-size: 0.8rem; color: #666; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.2rem; }
+      nav ul { display: none; }
+      .about-inner { flex-direction: column; text-align: center; }
+      .about-avatar { margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Trisha <span>Hindi Classes</span></div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#alphabet">Alphabet</a></li>
+      <li><a href="#matras">Matras</a></li>
+      <li><a href="#barakhadi">Barakhadi</a></li>
+      <li><a href="#words">Words</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Enroll Now — Classes Available Online & In-Person</div>
+      <h1>Learn <span>Hindi</span> the Right Way</h1>
+      <p>Learn Hindi with Trisha — M.A. in Hindi with 25 years of teaching experience, guiding students from early childhood all the way to advanced college level.</p>
+      <a href="#contact" class="btn btn-primary">Book a Free Trial Class</a>
+      <a href="#courses" class="btn btn-outline">See Courses</a>
+      <div class="stats">
+        <div class="stat"><strong>500+</strong><span>Students Taught</span></div>
+        <div class="stat"><strong>25+</strong><span>Years Experience</span></div>
+        <div class="stat"><strong>M.A.</strong><span>Hindi Literature</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="container">
+      <div class="section-title">
+        <h2>Meet Your Teacher</h2>
+        <div class="line"></div>
+      </div>
+      <div class="about-inner">
+        <div class="about-avatar">🧑‍🏫</div>
+        <div class="about-text">
+          <h3>Trisha — Hindi Language Expert</h3>
+          <p>Namaste! I'm Trisha, a Hindi language teacher with a Master's degree in Hindi and over 25 years of teaching experience. I have had the privilege of teaching students of all ages — from young children taking their very first steps in Hindi, to college-level students mastering advanced literature and grammar.</p>
+          <p>My approach is warm, structured, and tailored to every student. Whether you are a complete beginner or preparing for advanced studies, I bring the same passion and dedication to every class.</p>
+          <div class="tags">
+            <span class="tag">Conversational Hindi</span>
+            <span class="tag">Reading & Writing</span>
+            <span class="tag">Devanagari Script</span>
+            <span class="tag">Hindi Grammar</span>
+            <span class="tag">Business Hindi</span>
+            <span class="tag">Bollywood Hindi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="courses">
+    <div class="container">
+      <div class="section-title">
+        <h2>Courses Offered</h2>
+        <p>Structured programs for every level</p>
+        <div class="line"></div>
+      </div>
+      <div class="courses-grid">
+        <div class="course-card">
+          <div class="course-icon">🌱</div>
+          <h3>Hindi for Beginners</h3>
+          <p>Start from zero. Learn the Devanagari alphabet, basic vocabulary, and everyday phrases to get you speaking quickly.</p>
+          <span class="course-level beginner">Beginner</span>
+        </div>
+        <div class="course-card">
+          <div class="course-icon">🗣️</div>
+          <h3>Conversational Hindi</h3>
+          <p>Build confidence in real conversations. Focus on listening, speaking, and understanding native speakers.</p>
+          <span class="course-level intermediate">Intermediate</span>
+        </div>
+        <div class="course-card">
+          <div class="course-icon">📖</div>
+          <h3>Hindi Grammar Mastery</h3>
+          <p>Deep-dive into sentence structure, verb conjugations, and complex grammar to write and speak like a native.</p>
+          <span class="course-level intermediate">Intermediate</span>
+        </div>
+        <div class="course-card">
+          <div class="course-icon">🎓</div>
+          <h3>Advanced Hindi</h3>
+          <p>Refine your fluency with literature, formal writing, idioms, and advanced vocabulary for professional use.</p>
+          <span class="course-level advanced">Advanced</span>
+        </div>
+        <div class="course-card">
+          <div class="course-icon">🎬</div>
+          <h3>Bollywood Hindi</h3>
+          <p>Learn Hindi through songs and movies. The most fun way to pick up natural expressions and cultural context.</p>
+          <span class="course-level beginner">All Levels</span>
+        </div>
+        <div class="course-card">
+          <div class="course-icon">👨‍💼</div>
+          <h3>Business Hindi</h3>
+          <p>Professional Hindi for business communication, meetings, and written correspondence in corporate settings.</p>
+          <span class="course-level advanced">Advanced</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="why" id="why">
+    <div class="container">
+      <div class="section-title">
+        <h2>Why Learn With Trisha?</h2>
+        <div class="line"></div>
+      </div>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-icon">🎯</div>
+          <h4>Personalized Lessons</h4>
+          <p>Every student learns differently. Classes are tailored to your pace, goals, and learning style.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🌍</div>
+          <h4>Online & In-Person</h4>
+          <p>Flexible learning from anywhere in the world, or in-person if you're local.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">📅</div>
+          <h4>Flexible Scheduling</h4>
+          <p>Book classes around your schedule — mornings, evenings, or weekends.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-icon">🏆</div>
+          <h4>Proven Results</h4>
+          <p>Students consistently achieve conversational fluency within 3–6 months of regular classes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="alphabet">
+    <div class="container">
+      <div class="section-title">
+        <h2>Hindi Letters for Beginners</h2>
+        <p>Start here — learn the Devanagari script one letter at a time</p>
+        <div class="line"></div>
+      </div>
+
+      <h3 style="text-align:center; color:var(--navy); margin-bottom:1rem;">Vowels (स्वर)</h3>
+      <div class="alphabet-grid" id="vowels-grid"></div>
+
+      <h3 style="text-align:center; color:var(--navy); margin:2rem 0 1rem;">Consonants (व्यंजन)</h3>
+      <div class="alphabet-grid" id="consonants-grid"></div>
+
+      <p style="text-align:center; color:#888; margin-top:2rem; font-size:0.9rem;">
+        Click any letter to hear its pronunciation
+      </p>
+    </div>
+  </section>
+
+  <section id="matras">
+    <div class="container">
+      <div class="section-title">
+        <h2>Hindi Matras (मात्राएं)</h2>
+        <p>Vowel signs that change the sound of a consonant</p>
+        <div class="line"></div>
+      </div>
+      <div class="alphabet-grid" id="matras-grid"></div>
+      <div style="margin-top:2rem; background:var(--cream); border-radius:16px; padding:1.5rem;">
+        <h3 style="color:var(--navy); margin-bottom:1rem; text-align:center;">Example with क (ka)</h3>
+        <div class="alphabet-grid" id="matra-examples-grid"></div>
+      </div>
+      <p style="text-align:center; color:#888; margin-top:1.5rem; font-size:0.9rem;">Click any matra to hear its sound</p>
+    </div>
+  </section>
+
+  <section id="barakhadi" style="background:var(--cream);">
+    <div class="container" style="max-width:1100px;">
+      <div class="section-title">
+        <h2>Barakhadi (बाराखड़ी)</h2>
+        <p>All consonants with every matra — the complete Hindi syllable chart</p>
+        <div class="line"></div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table id="barakhadi-table" style="border-collapse:collapse; width:100%; font-family:'Noto Sans Devanagari',sans-serif;"></table>
+      </div>
+    </div>
+  </section>
+
+  <section id="words">
+    <div class="container">
+      <div class="section-title">
+        <h2>Do-Akshar ke Shabd (दो अक्षर के शब्द)</h2>
+        <p>Common two-letter Hindi words — bina matra aur matra ke saath</p>
+        <div class="line"></div>
+      </div>
+
+      <h3 style="color:var(--navy); margin-bottom:1rem;">Bina Matra ke Shabd</h3>
+      <div class="words-grid" id="words-grid"></div>
+
+      <h3 style="color:var(--navy); margin:2.5rem 0 1rem;">Matra wale Shabd — 10 words per Matra</h3>
+      <div class="matra-tabs" id="matra-tabs"></div>
+      <div class="words-grid" id="matra-words-grid" style="margin-top:1.5rem;"></div>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-title">
+        <h2>What Students Say</h2>
+        <div class="line"></div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>"Trisha is an amazing teacher! Within 3 months I went from knowing nothing to holding basic conversations. Her patience and teaching method are exceptional."</p>
+          <div class="testimonial-author">— Sarah M., United States</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>"I wanted to learn Hindi before visiting my in-laws. Trisha made it practical and fun. I could actually communicate with them — they were so surprised!"</p>
+          <div class="testimonial-author">— James K., United Kingdom</div>
+        </div>
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+          <p>"Best Hindi teacher I've found. The lessons are well-structured and he explains complex grammar in a way that actually makes sense. Highly recommend!"</p>
+          <div class="testimonial-author">— Priya R., Canada</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-title">
+        <h2>Book Your Free Trial Class</h2>
+        <p>No commitment — just come and see how it feels</p>
+        <div class="line"></div>
+      </div>
+      <p style="margin-bottom: 2rem; color: #ddd; font-size: 1rem;">
+        Or email me directly at
+        <a href="mailto:learnhindiwithtrisha@gmail.com" style="color: var(--saffron); text-decoration: none; font-weight: 600;">learnhindiwithtrisha@gmail.com</a>
+      </p>
+      <form class="contact-form" action="https://formspree.io/f/xeevdlqn" method="POST" onsubmit="handleSubmit(event)">
+        <input type="text" name="Name" placeholder="Your Name" required>
+        <input type="email" name="Email" placeholder="Email Address" required>
+        <input type="tel" name="Phone" placeholder="Phone Number (optional)">
+        <select name="Course">
+          <option value="" disabled selected>Select a Course</option>
+          <option>Hindi for Beginners</option>
+          <option>Conversational Hindi</option>
+          <option>Hindi Grammar Mastery</option>
+          <option>Advanced Hindi</option>
+          <option>Bollywood Hindi</option>
+          <option>Business Hindi</option>
+        </select>
+        <textarea name="Message" placeholder="Tell me a bit about yourself and your goals..."></textarea>
+        <button type="submit" class="btn btn-primary">Send Message & Book Trial</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2024 <span>Trisha Hindi Classes</span> — Teaching Hindi, One Student at a Time</p>
+  </footer>
+
+  <script>
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = form.querySelector('button');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          btn.textContent = '✓ Message Sent! I\'ll be in touch soon.';
+          btn.style.background = '#138808';
+          form.reset();
+        } else {
+          btn.textContent = 'Error — please try again';
+          btn.disabled = false;
+        }
+      } catch {
+        btn.textContent = 'Error — please try again';
+        btn.disabled = false;
+      }
+    }
+
+    const vowels = [
+      {d:'अ',r:'a',s:'as in "fun"'},{d:'आ',r:'aa',s:'as in "car"'},{d:'इ',r:'i',s:'as in "pin"'},
+      {d:'ई',r:'ee',s:'as in "feet"'},{d:'उ',r:'u',s:'as in "put"'},{d:'ऊ',r:'oo',s:'as in "moon"'},
+      {d:'ए',r:'e',s:'as in "say"'},{d:'ऐ',r:'ai',s:'as in "cat"'},{d:'ओ',r:'o',s:'as in "go"'},
+      {d:'औ',r:'au',s:'as in "now"'},{d:'अं',r:'an',s:'nasal'},{d:'अः',r:'ah',s:'aspirate'}
+    ];
+    const consonants = [
+      // Velar
+      {d:'क',r:'ka',s:'k'},{d:'ख',r:'kha',s:'kh'},{d:'ग',r:'ga',s:'g'},{d:'घ',r:'gha',s:'gh'},{d:'ङ',r:'nga',s:'ng'},
+      // Palatal
+      {d:'च',r:'cha',s:'ch'},{d:'छ',r:'chha',s:'chh'},{d:'ज',r:'ja',s:'j'},{d:'झ',r:'jha',s:'jh'},{d:'ञ',r:'nya',s:'ny'},
+      // Retroflex
+      {d:'ट',r:'ṭa',s:'hard t'},{d:'ठ',r:'ṭha',s:'hard th'},{d:'ड',r:'ḍa',s:'hard d'},{d:'ढ',r:'ḍha',s:'hard dh',dot:true},{d:'ण',r:'ṇa',s:'hard n'},
+      // Dental
+      {d:'त',r:'ta',s:'soft t'},{d:'थ',r:'tha',s:'soft th'},{d:'द',r:'da',s:'soft d'},{d:'ध',r:'dha',s:'soft dh'},{d:'न',r:'na',s:'soft n'},
+      // Labial
+      {d:'प',r:'pa',s:'p'},{d:'फ',r:'pha',s:'ph'},{d:'ब',r:'ba',s:'b'},{d:'भ',r:'bha',s:'bh'},{d:'म',r:'ma',s:'m'},
+      // Semivowels & sibilants
+      {d:'य',r:'ya',s:'y'},{d:'र',r:'ra',s:'r'},{d:'ल',r:'la',s:'l'},{d:'व',r:'va',s:'v'},
+      {d:'श',r:'sha',s:'sh'},{d:'ष',r:'sha',s:'hard sh'},{d:'स',r:'sa',s:'s'},{d:'ह',r:'ha',s:'h'},
+      // Compound
+      {d:'क्ष',r:'ksha',s:'ksh'},{d:'त्र',r:'tra',s:'tr'},{d:'ज्ञ',r:'gya',s:'gy'}
+    ];
+
+    function renderGrid(data, containerId) {
+      const grid = document.getElementById(containerId);
+      data.forEach(({d, r, s, dot}) => {
+        const card = document.createElement('div');
+        card.className = 'letter-card';
+        card.innerHTML = `<span class="devanagari">${d}</span>${dot ? '<div style="font-size:0.7rem;line-height:0.5;color:black;">•</div>' : ''}<div class="roman">${r}</div><div class="sound">${s}</div>`;
+        card.addEventListener('click', () => {
+          const u = new SpeechSynthesisUtterance(r);
+          u.lang = 'hi-IN'; u.rate = 0.8;
+          speechSynthesis.speak(u);
+          card.style.background = '#fff3e0';
+          setTimeout(() => card.style.background = 'white', 600);
+        });
+        grid.appendChild(card);
+      });
+    }
+
+    renderGrid(vowels, 'vowels-grid');
+    renderGrid(consonants, 'consonants-grid');
+
+    const matras = [
+      {d:'ा',r:'aa',s:'kaana — long a'},{d:'ि',r:'i',s:'chhoti i — short i'},
+      {d:'ी',r:'ee',s:'badi ee — long ee'},{d:'ु',r:'u',s:'chhota u — short u'},
+      {d:'ू',r:'oo',s:'bada oo — long oo'},{d:'े',r:'e',s:'e — as in say'},
+      {d:'ै',r:'ai',s:'ai — as in cat'},{d:'ो',r:'o',s:'o — as in go'},
+      {d:'ौ',r:'au',s:'au — as in now'},{d:'ं',r:'an',s:'anusvaara — nasal'},
+      {d:'ः',r:'ah',s:'visarga — breath'},{d:'्',r:'(hal)',s:'halant — no vowel'}
+    ];
+
+    const matraExamples = [
+      {d:'क',r:'ka',s:'base letter'},{d:'का',r:'kaa',s:'+ ा'},
+      {d:'कि',r:'ki',s:'+ ि'},{d:'की',r:'kee',s:'+ ी'},
+      {d:'कु',r:'ku',s:'+ ु'},{d:'कू',r:'koo',s:'+ ू'},
+      {d:'के',r:'ke',s:'+ े'},{d:'कै',r:'kai',s:'+ ै'},
+      {d:'को',r:'ko',s:'+ ो'},{d:'कौ',r:'kau',s:'+ ौ'},
+      {d:'कं',r:'kan',s:'+ ं'},{d:'कः',r:'kah',s:'+ ः'}
+    ];
+
+    // BARAKHADI
+    const baraConsonants = [
+      {d:'क',r:'k'},{d:'ख',r:'kh'},{d:'ग',r:'g'},{d:'घ',r:'gh'},{d:'ङ',r:'ng'},
+      {d:'च',r:'ch'},{d:'छ',r:'chh'},{d:'ज',r:'j'},{d:'झ',r:'jh'},{d:'ञ',r:'ny'},
+      {d:'ट',r:'ṭ'},{d:'ठ',r:'ṭh'},{d:'ड',r:'ḍ'},{d:'ढ',r:'ḍh'},{d:'ण',r:'ṇ'},
+      {d:'त',r:'t'},{d:'थ',r:'th'},{d:'द',r:'d'},{d:'ध',r:'dh'},{d:'न',r:'n'},
+      {d:'प',r:'p'},{d:'फ',r:'ph'},{d:'ब',r:'b'},{d:'भ',r:'bh'},{d:'म',r:'m'},
+      {d:'य',r:'y'},{d:'र',r:'r'},{d:'ल',r:'l'},{d:'व',r:'v'},
+      {d:'श',r:'sh'},{d:'ष',r:'ṣh'},{d:'स',r:'s'},{d:'ह',r:'h'},
+      {d:'क्ष',r:'ksh'},{d:'त्र',r:'tr'},{d:'ज्ञ',r:'gy'}
+    ];
+    const baraMatras = [
+      {m:'',r:'a'},{m:'ा',r:'aa'},{m:'ि',r:'i'},{m:'ी',r:'ee'},
+      {m:'ु',r:'u'},{m:'ू',r:'oo'},{m:'े',r:'e'},{m:'ै',r:'ai'},
+      {m:'ो',r:'o'},{m:'ौ',r:'au'},{m:'ं',r:'an'},{m:'ः',r:'ah'}
+    ];
+
+    const table = document.getElementById('barakhadi-table');
+    // Header row
+    const thead = table.createTHead();
+    const hrow = thead.insertRow();
+    hrow.insertCell().innerHTML = '<th>Letter</th>';
+    baraMatras.forEach(({m, r}) => {
+      const th = document.createElement('th');
+      th.innerHTML = `<span style="font-size:1rem;">${m || 'अ'}</span><br><span style="font-size:0.7rem;font-weight:normal;">${r}</span>`;
+      hrow.appendChild(th);
+    });
+
+    const tbody = table.createTBody();
+    baraConsonants.forEach(({d, r}) => {
+      const row = tbody.insertRow();
+      const label = row.insertCell();
+      label.innerHTML = `<span class="bara-hi">${d}</span><span class="bara-en">${r}</span>`;
+      baraMatras.forEach(({m, r: mr}) => {
+        const cell = row.insertCell();
+        const syllable = d + m;
+        const roman = r + mr;
+        cell.innerHTML = `<span class="bara-hi">${syllable}</span><span class="bara-en">${roman}</span>`;
+        cell.title = roman;
+        cell.addEventListener('click', () => {
+          const u = new SpeechSynthesisUtterance(roman);
+          u.lang = 'hi-IN'; u.rate = 0.8;
+          speechSynthesis.speak(u);
+        });
+      });
+    });
+
+    // TWO-LETTER WORDS
+    const words = [
+      {h:'घर',r:'ghar',m:'house'},
+      {h:'मन',r:'man',m:'mind'},
+      {h:'जल',r:'jal',m:'water'},
+      {h:'फल',r:'phal',m:'fruit'},
+      {h:'कल',r:'kal',m:'yesterday / tomorrow'},
+      {h:'नल',r:'nal',m:'tap'},
+      {h:'हम',r:'ham',m:'we'},
+      {h:'वन',r:'van',m:'forest'},
+      {h:'धन',r:'dhan',m:'wealth'},
+      {h:'तन',r:'tan',m:'body'},
+      {h:'सब',r:'sab',m:'all'},
+      {h:'पर',r:'par',m:'but / on'},
+      {h:'डर',r:'dar',m:'fear'},
+      {h:'गम',r:'gam',m:'sorrow'},
+      {h:'दम',r:'dam',m:'strength'},
+      {h:'सच',r:'sach',m:'truth'},
+      {h:'नर',r:'nar',m:'male'},
+      {h:'कर',r:'kar',m:'do / hand'},
+      {h:'भर',r:'bhar',m:'fill'},
+      {h:'मर',r:'mar',m:'die'},
+      {h:'चल',r:'chal',m:'move / walk'},
+      {h:'बल',r:'bal',m:'strength'},
+      {h:'हल',r:'hal',m:'solution / plough'},
+      {h:'दल',r:'dal',m:'group / lentil'},
+      {h:'पल',r:'pal',m:'moment'},
+      {h:'तल',r:'tal',m:'bottom'},
+      {h:'कप',r:'kap',m:'cup'},
+      {h:'नग',r:'nag',m:'gem'},
+      {h:'रथ',r:'rath',m:'chariot'},
+      {h:'गज',r:'gaj',m:'elephant'},
+    ];
+
+    const matraWords = {
+      'ा (aa)': [
+        {h:'काम',r:'kaam',m:'work'},{h:'नाम',r:'naam',m:'name'},
+        {h:'राम',r:'raam',m:'Ram'},{h:'दाम',r:'daam',m:'price'},
+        {h:'माल',r:'maal',m:'goods'},{h:'साल',r:'saal',m:'year'},
+        {h:'बाल',r:'baal',m:'hair'},{h:'हाल',r:'haal',m:'condition'},
+        {h:'ताल',r:'taal',m:'rhythm'},{h:'पाल',r:'paal',m:'sail / nurture'},
+      ],
+      'ि (i)': [
+        {h:'दिन',r:'din',m:'day'},{h:'मिल',r:'mil',m:'meet'},
+        {h:'तिल',r:'til',m:'sesame'},{h:'हिल',r:'hil',m:'shake'},
+        {h:'बिल',r:'bil',m:'bill / burrow'},{h:'दिल',r:'dil',m:'heart'},
+        {h:'गिन',r:'gin',m:'count'},{h:'चिन',r:'chin',m:'pick'},
+        {h:'जिन',r:'jin',m:'those'},{h:'किन',r:'kin',m:'whose'},
+      ],
+      'ी (ee)': [
+        {h:'नीम',r:'neem',m:'neem tree'},{h:'दीप',r:'deep',m:'lamp'},
+        {h:'तीर',r:'teer',m:'arrow'},{h:'वीर',r:'veer',m:'brave'},
+        {h:'धीर',r:'dheer',m:'patient'},{h:'पीर',r:'peer',m:'saint / pain'},
+        {h:'नील',r:'neel',m:'indigo / blue'},{h:'रील',r:'reel',m:'reel'},
+        {h:'भील',r:'bheel',m:'tribe'},{h:'सीर',r:'seer',m:'plough'},
+      ],
+      'ु (u)': [
+        {h:'सुन',r:'sun',m:'listen'},{h:'गुन',r:'gun',m:'virtue'},
+        {h:'धुन',r:'dhun',m:'melody'},{h:'चुन',r:'chun',m:'choose'},
+        {h:'बुन',r:'bun',m:'weave'},{h:'कुल',r:'kul',m:'family / total'},
+        {h:'मुख',r:'mukh',m:'face'},{h:'सुख',r:'sukh',m:'happiness'},
+        {h:'दुख',r:'dukh',m:'sorrow'},{h:'युग',r:'yug',m:'era / age'},
+      ],
+      'ू (oo)': [
+        {h:'फूल',r:'phool',m:'flower'},{h:'भूल',r:'bhool',m:'forget'},
+        {h:'धूल',r:'dhool',m:'dust'},{h:'मूल',r:'mool',m:'root'},
+        {h:'झूल',r:'jhool',m:'swing'},{h:'खूब',r:'khoob',m:'very much'},
+        {h:'दूत',r:'doot',m:'messenger'},{h:'रूप',r:'roop',m:'form / beauty'},
+        {h:'भूत',r:'bhoot',m:'ghost / past'},{h:'कूल',r:'kool',m:'bank / shore'},
+      ],
+      'े (e)': [
+        {h:'देश',r:'desh',m:'country'},{h:'रेत',r:'ret',m:'sand'},
+        {h:'खेत',r:'khet',m:'field'},{h:'खेल',r:'khel',m:'game / play'},
+        {h:'तेल',r:'tel',m:'oil'},{h:'रेल',r:'rel',m:'train'},
+        {h:'पेट',r:'pet',m:'stomach'},{h:'मेल',r:'mel',m:'union / mix'},
+        {h:'बेल',r:'bel',m:'vine'},{h:'नेक',r:'nek',m:'noble'},
+      ],
+      'ै (ai)': [
+        {h:'बैल',r:'bail',m:'ox'},{h:'पैर',r:'pair',m:'foot / leg'},
+        {h:'तैर',r:'tair',m:'swim'},{h:'गैस',r:'gas',m:'gas'},
+        {h:'कैद',r:'kaid',m:'imprisonment'},{h:'वैर',r:'vair',m:'enmity'},
+        {h:'नैन',r:'nain',m:'eyes'},{h:'सैर',r:'sair',m:'stroll'},
+        {h:'मैल',r:'mail',m:'dirt'},{h:'रैन',r:'rain',m:'night (poetic)'},
+      ],
+      'ो (o)': [
+        {h:'मोर',r:'mor',m:'peacock'},{h:'चोर',r:'chor',m:'thief'},
+        {h:'शोर',r:'shor',m:'noise'},{h:'जोर',r:'jor',m:'force'},
+        {h:'मोल',r:'mol',m:'value'},{h:'बोल',r:'bol',m:'speak'},
+        {h:'खोल',r:'khol',m:'open'},{h:'तोल',r:'tol',m:'weigh'},
+        {h:'घोल',r:'ghol',m:'dissolve'},{h:'होश',r:'hosh',m:'senses'},
+      ],
+      'ौ (au)': [
+        {h:'मौत',r:'maut',m:'death'},{h:'चौक',r:'chauk',m:'market square'},
+        {h:'कौन',r:'kaun',m:'who'},{h:'मौन',r:'maun',m:'silence'},
+        {h:'शौक',r:'shauk',m:'hobby'},{h:'गौर',r:'gaur',m:'attention'},
+        {h:'लौट',r:'laut',m:'return'},{h:'सौर',r:'saur',m:'solar'},
+        {h:'भौर',r:'bhaur',m:'bumblebee'},{h:'दौड़',r:'daud',m:'run'},
+      ],
+      'ं (an)': [
+        {h:'रंग',r:'rang',m:'color'},{h:'संग',r:'sang',m:'together'},
+        {h:'मंच',r:'manch',m:'stage'},{h:'बंद',r:'band',m:'closed'},
+        {h:'गंध',r:'gandh',m:'fragrance'},{h:'वंश',r:'vansh',m:'lineage'},
+        {h:'दंड',r:'dand',m:'punishment'},{h:'अंग',r:'ang',m:'body part'},
+        {h:'चंद',r:'chand',m:'few'},{h:'कंद',r:'kand',m:'bulb / tuber'},
+      ],
+    };
+
+    const matraTabsEl = document.getElementById('matra-tabs');
+    const matraGridEl = document.getElementById('matra-words-grid');
+
+    function showMatraWords(key, btn) {
+      document.querySelectorAll('.matra-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      matraGridEl.innerHTML = '';
+      matraWords[key].forEach(({h, r, m}) => {
+        const card = document.createElement('div');
+        card.className = 'word-card';
+        card.innerHTML = `<span class="w-hindi">${h}</span><div class="w-roman">${r}</div><div class="w-meaning">${m}</div>`;
+        card.addEventListener('click', () => {
+          const u = new SpeechSynthesisUtterance(h);
+          u.lang = 'hi-IN'; u.rate = 0.8;
+          speechSynthesis.speak(u);
+        });
+        matraGridEl.appendChild(card);
+      });
+    }
+
+    Object.keys(matraWords).forEach((key, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'matra-tab' + (i === 0 ? ' active' : '');
+      btn.textContent = key;
+      btn.addEventListener('click', () => showMatraWords(key, btn));
+      matraTabsEl.appendChild(btn);
+    });
+    showMatraWords(Object.keys(matraWords)[0], matraTabsEl.firstChild);
+
+    const grid = document.getElementById('words-grid');
+    words.forEach(({h, r, m}) => {
+      const card = document.createElement('div');
+      card.className = 'word-card';
+      card.innerHTML = `<span class="w-hindi">${h}</span><div class="w-roman">${r}</div><div class="w-meaning">${m}</div>`;
+      card.addEventListener('click', () => {
+        const u = new SpeechSynthesisUtterance(h);
+        u.lang = 'hi-IN'; u.rate = 0.8;
+        speechSynthesis.speak(u);
+      });
+      grid.appendChild(card);
+    });
+
+    renderGrid(matras, 'matras-grid');
+    renderGrid(matraExamples, 'matra-examples-grid');
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
